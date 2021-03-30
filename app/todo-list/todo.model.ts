@@ -7,9 +7,9 @@ export class Todo {
     }
 
     getTitle(): string {
-            return this.title;
+        return this.title;
     }
-    getDone(): boolean {
+    get done(): boolean {
         return this.completed;
     }
     
