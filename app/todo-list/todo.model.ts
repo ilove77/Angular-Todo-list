@@ -16,6 +16,17 @@ export class Todo {
     toggleCompletion(): void {
         this.completed = !this.completed;
     }
-   
+
+    //修改資料
+    private editMode = false;
+    get editing(): boolean {
+        return this.editMode;
+      } 
+    set editable(bl: boolean) {
+        this.editMode = bl;
+    }
+    setTitle(title: string): void {
+        this.title = title;
+    }
 
 }

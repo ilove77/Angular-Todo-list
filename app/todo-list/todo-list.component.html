@@ -14,16 +14,25 @@
     <section class="main">
   
         <ul class="todo-list">
-            <li *ngFor="let todo of getList(),index as i" [class.completed]="todo.done">
+            <li *ngFor="let todo of getList(),index as i" [class.completed]="todo.done" [class.editing]="todo.editing">
               <div class="view">
                 <input 
                     type="checkbox"
                     class="toggle" type="checkbox"  
                     (click)="todo.toggleCompletion()"
                     [checked]="todo.done">
-                <label>{{ todo.getTitle() }}</label>
+                <label (dblclick)="edit(todo)">{{ todo.getTitle() }}</label>
                 <button class="destroy"  (click)="remove(i)"></button>
-              </div>
+              </div> 
+              <input
+                class="edit"
+                #editedtodo
+                *ngIf="todo.editing"
+                [value]="todo.getTitle()"
+                (blur)="update(todo, editedtodo.value)"
+                (keyup.enter)="update(todo, editedtodo.value)"
+                (keyup.escape)="cancelEditing(todo)"
+              >
             </li>
         </ul>
   

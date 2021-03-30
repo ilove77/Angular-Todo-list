@@ -10,7 +10,7 @@ export class TodoListService {
   
   constructor() { }
 
-  getList(): Todo[] {
+  getList()  {
     return this.list;
   }
  
