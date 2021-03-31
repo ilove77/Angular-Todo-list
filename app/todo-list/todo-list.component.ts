@@ -2,12 +2,18 @@ import { Component, OnInit } from '@angular/core';
 import { TodoListService } from './todo-list.service';
  
 import {Todo} from './todo.model';
+
+//enum
+import {TodoStatusType} from './todo-status-type.enum';
 @Component({
   selector: 'app-todo-list',
   templateUrl: './todo-list.component.html',
   styleUrls: ['./todo-list.component.css']
 })
 export class TodoListComponent implements OnInit {
+  //enum
+  todoStatusType = TodoStatusType;
+  private status = TodoStatusType.All;
 
   constructor(private todoListService: TodoListService) { }
 
@@ -19,7 +25,20 @@ export class TodoListComponent implements OnInit {
     inputRef.value = '';  
   } 
   getList() {
-     return this.todoListService.getList();
+    let list: Todo[] = [];
+
+    switch(this.status){
+      case TodoStatusType.Active:
+        list = this.getRemainingList();
+        break;
+      case TodoStatusType.Completed:
+        list = this.getCompletedList();
+        break;
+      default:
+        list = this.todoListService.getList();
+        break; 
+    }
+     return list
   }
   remove(index: number): void {
     this.todoListService.remove(index);
@@ -51,4 +70,38 @@ export class TodoListComponent implements OnInit {
     todo.editable = false;
   }
 
+  getRemainingList():Todo[]{
+    return this.todoListService.getWithCompleted(false);
+  }
+
+  //enum
+  getCompletedList():Todo[]{
+    return this.todoListService.getWithCompleted(true);
+  }
+  setStatus(status:number):void{
+    this.status = status;
+  }
+  checkStatus(status:number):boolean{
+    return this.status === status;
+  }
+  //移除
+  removeCompleted(): void {
+    this.todoListService.removeCompleted();
+  }
+  //全選
+  getAllList(): Todo[] {
+    return this.todoListService.getList();
+  }
+   
+  allCompleted(): boolean {
+    return this.getAllList().length === this.getCompletedList().length;
+  }
+   
+  setAllTo(completed: boolean): void {
+  
+    this.getAllList().forEach((todo) => {
+      todo.setCompleted(completed);
+    });
+  
+  }
 }

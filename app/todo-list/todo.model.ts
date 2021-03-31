@@ -21,12 +21,14 @@ export class Todo {
     private editMode = false;
     get editing(): boolean {
         return this.editMode;
-      } 
+    } 
     set editable(bl: boolean) {
         this.editMode = bl;
     }
     setTitle(title: string): void {
         this.title = title;
     }
-
+    setCompleted(completed: boolean): void {
+        this.completed = completed;
+      }
 }
